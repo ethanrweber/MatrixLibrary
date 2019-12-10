@@ -44,13 +44,18 @@ namespace MatrixLibrary
         }
 
         // operators
-        public static Matrix operator +(Matrix a) => a;
+        public static Matrix operator +(Matrix a)
+        {
+            if (a == null) throw new ArgumentNullException();
+            return a;
+        }
         public static Matrix operator -(Matrix a)
         {
-            // todo: is a new matrix necessary?
-            Matrix b = new Matrix(a);
-            for (int i = 0; i < b.rows; i++)
-                for (int j = 0; j < b.columns; j++)
+            if (a == null) throw new ArgumentNullException();
+
+            Matrix b = new Matrix(a.rows, a.columns);
+            for (int i = 0; i < a.rows; i++)
+                for (int j = 0; j < a.columns; j++)
                     b[i, j] = -a[i, j];
             return b;
         }
@@ -64,10 +69,11 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix operator +(Matrix a, Matrix b)
         {
+            if (a == null || b == null)
+                throw new ArgumentNullException();
             if (a.rows != b.rows || a.columns != b.columns)
-                throw new ArgumentException("matrices must be the same size in rows and columns to add");
+                throw new ArgumentException("matrices must have the same number of rows and columns respectively");
 
-            // todo: is a new matrix necessary?
             Matrix result = new Matrix(a.rows, a.columns);
             for (int i = 0; i < a.rows; i++)
                 for (int j = 0; j < a.columns; j++)
@@ -85,10 +91,11 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix operator -(Matrix a, Matrix b)
         {
+            if (a == null || b == null)
+                throw new ArgumentNullException();
             if (a.rows != b.rows || a.columns != b.columns)
-                throw new ArgumentException("matrices must be the same size in rows and columns to add");
+                throw new ArgumentException("matrices must have the same number of rows and columns respectively");
 
-            // todo: is a new matrix necessary?
             Matrix result = new Matrix(a.rows, a.columns);
             for (int i = 0; i < a.rows; i++)
                 for (int j = 0; j < a.columns; j++)
@@ -104,17 +111,18 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix operator *(Matrix a, Matrix b)
         {
+            if (a == null || b == null)
+                throw new ArgumentNullException();
             if (a.columns != b.rows)
-                throw new ArgumentException("cannot multiply matrices with different sized columns/rows");
+                throw new ArgumentException("a must have the same number of columns as b does rows for multiplication");
 
-            int m = a.rows, n = b.columns;
-            Matrix result = new Matrix(m, n);
+            Matrix result = new Matrix(a.rows, b.columns);
 
-            for (int i = 0; i < m; i++)
-                for (int j = 0; j < n; j++)
+            for (int i = 0; i < a.rows; i++)
+                for (int j = 0; j < b.columns; j++)
                 {
                     decimal sum = 0;
-                    for (int k = 0; k < m; k++)
+                    for (int k = 0; k < a.rows; k++)
                         sum += a[i, k] * b[k, j];
                     result[i, j] = sum;
                 }
@@ -131,8 +139,15 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static bool operator ==(Matrix a, Matrix b)
         {
+            if (ReferenceEquals(a, b)) return true;
+
+            if (ReferenceEquals(a, null) && !ReferenceEquals(b, null)
+                || ReferenceEquals(b, null) && !ReferenceEquals(a, null))
+                return false;
+
             if (a.rows != b.rows || a.columns != b.columns)
                 return false;
+
             for (int i = 0; i < a.rows; i++)
                 for (int j = 0; j < a.columns; j++)
                     if (a[i, j] != b[i, j])

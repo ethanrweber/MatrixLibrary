@@ -113,6 +113,9 @@ namespace MatrixLibrary
         /// excluding row 'row' and column 'col'</returns>
         public static Matrix GetSubmatrix(Matrix parent, int row, int col)
         {
+            if (row < 0 || row >= parent.rows || col < 0 || col >= parent.columns)
+                throw new ArgumentException("row and column must be valid rows/columns of the parent matrix");
+
             int pn = parent.rows;
             if (pn == 0) throw new ArgumentException("matrix must have values");
             if (pn == 1) return new Matrix(new decimal[0, 0]);

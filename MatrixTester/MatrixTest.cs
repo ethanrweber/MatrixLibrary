@@ -67,13 +67,10 @@ namespace MatrixTester
         [TestMethod]
         public void TestMultiplication() // a * b = c
         {
-            decimal[,] test = new decimal[,] { { 2, 4 }, { 6, 8 } };
-            Matrix a = new Matrix(test);
+            Matrix a = new Matrix(new decimal[,] { { 2, 4 }, { 6, 8 } });
+            Matrix aSquared = new Matrix(new decimal[,] { { 28, 40 }, { 60, 88 } });
 
-            decimal[,] testSquared = new decimal[,] { { 28, 40 }, { 60, 88 } };
-            Matrix b = new Matrix(testSquared);
-
-            Assert.AreEqual(a * a, b);
+            Assert.AreEqual(a * a, aSquared);
         }
 
         [TestMethod]
