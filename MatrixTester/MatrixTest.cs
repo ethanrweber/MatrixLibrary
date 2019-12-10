@@ -8,6 +8,50 @@ namespace MatrixTester
     public class MatrixTest
     {
         [TestMethod]
+        public void TestEqualityByReference()
+        {
+            Matrix a = new Matrix(2, 2);
+            Matrix b = a;
+
+            Assert.AreEqual(a, b);
+        }
+
+        [TestMethod]
+        public void TestEqualityByValue()
+        {
+            Matrix a = new Matrix(new decimal[,] { { 1, 2, 3, 4 } });
+            Matrix b = new Matrix(new decimal[,] { { 1, 2, 3, 4 } });
+
+            Assert.AreEqual(a, b);
+        }
+
+        [TestMethod]
+        public void TestInequalityWithNull()
+        {
+            Matrix a = new Matrix(2, 2);
+            Matrix b = null;
+
+            Assert.AreNotEqual(a, b);
+        }
+
+        [TestMethod]
+        public void TestIndexerGet()
+        {
+            Matrix a = new Matrix(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+
+            Assert.AreEqual(a[1, 1], a.grid[1, 1]);
+        }
+
+        [TestMethod]
+        public void TestIndexerSet()
+        {
+            Matrix a = new Matrix(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+            a[1, 1] = 25;
+
+            Assert.AreEqual(a[1, 1], 25);
+        }
+
+        [TestMethod]
         public void TestPositiveUnaryOperator() // +
         {
             Matrix a = new Matrix(new decimal[,] { { 2, 4 }, { 6, 8 } });

@@ -91,6 +91,7 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix operator -(Matrix a, Matrix b)
         {
+            // I could just do "=> a + (-b)" but that would do 2 matrix inits instead of just 1 here
             if (a == null || b == null)
                 throw new ArgumentNullException();
             if (a.rows != b.rows || a.columns != b.columns)
