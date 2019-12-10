@@ -1,0 +1,9 @@
+C:\Users\eweber01\source\repos\Matrix\Matrix\bin\Debug\netstandard2.0\Matrix.deps.json
+C:\Users\eweber01\source\repos\Matrix\Matrix\bin\Debug\netstandard2.0\Matrix.dll
+C:\Users\eweber01\source\repos\Matrix\Matrix\bin\Debug\netstandard2.0\Matrix.pdb
+C:\Users\eweber01\source\repos\Matrix\Matrix\obj\Debug\netstandard2.0\Matrix.csprojAssemblyReference.cache
+C:\Users\eweber01\source\repos\Matrix\Matrix\obj\Debug\netstandard2.0\Matrix.csproj.CoreCompileInputs.cache
+C:\Users\eweber01\source\repos\Matrix\Matrix\obj\Debug\netstandard2.0\Matrix.AssemblyInfoInputs.cache
+C:\Users\eweber01\source\repos\Matrix\Matrix\obj\Debug\netstandard2.0\Matrix.AssemblyInfo.cs
+C:\Users\eweber01\source\repos\Matrix\Matrix\obj\Debug\netstandard2.0\Matrix.dll
+C:\Users\eweber01\source\repos\Matrix\Matrix\obj\Debug\netstandard2.0\Matrix.pdb
