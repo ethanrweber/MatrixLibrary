@@ -2,6 +2,13 @@
 
 namespace MatrixLibrary
 {
+
+
+    // TODO:
+    // move linear independence directly to this matrix class
+    // check notes to add other invertible matrix properties
+    // update matrix unit tests for this afterwards
+
     /// <summary>
     /// Matrix class to provide properties and functionality important to applications of linear algebra
     /// </summary>
@@ -11,6 +18,8 @@ namespace MatrixLibrary
         public decimal[,] grid { get; set; }
         public int rows => grid?.GetLength(0) ?? 0;
         public int columns => grid?.GetLength(1) ?? 0;
+        public decimal determinant => MatrixFunctions.GetDeterminant(this);
+        public bool isLinearlyIndependent => determinant != 0;
 
         // constructors
         public Matrix(int rows, int columns)
@@ -127,6 +136,20 @@ namespace MatrixLibrary
                         sum += a[i, k] * b[k, j];
                     result[i, j] = sum;
                 }
+            return result;
+        }
+
+        public static Matrix operator *(decimal scalar, Matrix a)
+        {
+            if (a == null) throw new ArgumentNullException();
+
+            // if all entries will be 0 why waste time actually multiplying?
+            if (scalar == 0) return new Matrix(a.rows, a.columns);
+
+            Matrix result = new Matrix(a.rows, a.columns);
+            for (int i = 0; i < a.rows; i++)
+                for (int j = 0; j < a.columns; j++)
+                    result[i, j] = scalar * a[i, j];
             return result;
         }
 

@@ -13,25 +13,26 @@ namespace MatrixLibrary
         /// </summary>
         /// <param name="matrix">m x n matrix</param>
         /// <returns>n x m matrix in reduced row echelon form</returns>
-        public static Matrix RREF(Matrix matrix)
+        public static Matrix RREF(Matrix rref)
         {
-            Matrix rref = new Matrix(matrix);
+            if(rref == null) throw new ArgumentNullException();
 
-            int lead = 0, rowCount = rref.rows, columnCount = rref.columns;
+            Matrix matrix = new Matrix(rref);
+            int lead = 0, rows = matrix.rows, cols = matrix.columns;
 
-            for (int r = 0; r < rowCount; r++)
+            for (int r = 0; r < rows; r++)
             {
-                if (columnCount <= lead)
+                if (cols <= lead)
                     break;
                 int i = r;
-                while (rref[i, lead] == 0)
+                while (matrix[i, lead] == 0)
                 {
                     i++;
-                    if (rowCount == i)
+                    if (rows == i)
                     {
                         i = r;
                         lead++;
-                        if (columnCount == lead)
+                        if (cols == lead)
                         {
                             lead--;
                             break;
@@ -39,34 +40,34 @@ namespace MatrixLibrary
                     }
                 }
 
-                for (int k = 0; k < columnCount; k++)
+                for (int k = 0; k < cols; k++)
                 {
-                    decimal temp = rref[i, k];
-                    rref[i, k] = rref[r, k];
-                    rref[r, k] = temp;
+                    decimal temp = matrix[i, k];
+                    matrix[i, k] = matrix[r, k];
+                    matrix[r, k] = temp;
                 }
 
-                var div = rref[r, lead];
+                var div = matrix[r, lead];
                 if (div != 0)
-                    for (int k = 0; k < columnCount; k++)
-                        rref[r, k] /= div;
+                    for (int k = 0; k < cols; k++)
+                        matrix[r, k] /= div;
 
-                for (int j = 0; j < rowCount; j++)
+                for (int j = 0; j < rows; j++)
                     if (j != r)
                     {
-                        var mult = rref[j, lead];
-                        for (int k = 0; k < columnCount; k++)
+                        var mult = matrix[j, lead];
+                        for (int k = 0; k < cols; k++)
                         {
-                            rref[j, k] = rref[j, k] - mult * rref[r, k];
-                            if (rref[j, k] % 1 == 0)
-                                rref[j, k] = (int)rref[j, k]; // remove rounding issue: 1.000000 -> 1
+                            matrix[j, k] = matrix[j, k] - mult * matrix[r, k];
+                            if (matrix[j, k] % 1 == 0)
+                                matrix[j, k] = (int)matrix[j, k]; // remove rounding issue: 1.000000 -> 1
                         }
                     }
 
                 lead++;
             }
 
-            return rref;
+            return matrix;
         }
 
         /// <summary>
@@ -91,13 +92,12 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static decimal GetDeterminant(Matrix matrix)
         {
-            int n = matrix.rows;
-
-            if (n == 0) throw new Exception("matrix cannot be empty");
-            if (n == 1) return matrix[0, 0];
+            if (matrix == null) throw new ArgumentNullException();
+            if (matrix.rows == 0) throw new ArgumentException("matrix cannot be empty");
+            if (matrix.rows == 1) return matrix[0, 0];
 
             decimal det = 0;
-            for (int j = 0; j < n; j++)
+            for (int j = 0; j < matrix.rows; j++)
                 det += (decimal)Math.Pow(-1, 1 + j) * matrix[1, j] * GetDeterminant(GetSubmatrix(matrix, 1, j));
 
             return det;
@@ -111,7 +111,7 @@ namespace MatrixLibrary
         /// <param name="col"></param>
         /// <returns>returns an (m-1) x (n-1) sub-matrix of the m x n parent matrix
         /// excluding row 'row' and column 'col'</returns>
-        public static Matrix GetSubmatrix(Matrix parent, int row, int col)
+        private static Matrix GetSubmatrix(Matrix parent, int row, int col)
         {
             if (row < 0 || row >= parent.rows || col < 0 || col >= parent.columns)
                 throw new ArgumentException("row and column must be valid rows/columns of the parent matrix");
@@ -147,6 +147,8 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix Identity(int n)
         {
+            if (n < 1) throw new ArgumentException("invalid n: n must be >= 1");
+
             Matrix identity = new Matrix(n, n);
             for (int i = 0; i < n; i++)
                 identity[i, i] = 1;
@@ -160,11 +162,12 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix GetTranspose(Matrix matrix)
         {
-            int n = matrix.rows, m = matrix.columns;
+            if (matrix == null) throw new ArgumentNullException();
+            if (matrix.rows < 1 || matrix.columns < 1) throw new ArgumentException("invalid size rows/columns, must be >= 1");
 
-            Matrix transpose = new Matrix(m, n);
-            for (int i = 0; i < m; i++)
-                for (int j = 0; j < n; j++)
+            Matrix transpose = new Matrix(matrix.columns, matrix.rows);
+            for (int i = 0; i < matrix.columns; i++)
+                for (int j = 0; j < matrix.rows; j++)
                     transpose[i, j] = matrix[j, i];
             return transpose;
         }
@@ -176,9 +179,11 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix GetInverse(Matrix matrix)
         {
+            if (matrix == null) throw new ArgumentNullException();
+            // todo: is returning null the best option?
+            if (matrix.rows != matrix.columns || GetDeterminant(matrix) == 0) return null; 
+
             int n = matrix.rows;
-            if (n != matrix.columns)
-                throw new ArgumentException("Cannot inverse a non-square matrix");
 
             Matrix toRref = new Matrix(n, 2 * n);
             for (int i = 0; i < n; i++)
@@ -190,8 +195,10 @@ namespace MatrixLibrary
                     toRref[i, j] = 0;
                 toRref[i, i + n] = 1;
             }
-
+            PrintMatrix(toRref);
             Matrix rref = RREF(toRref);
+            Console.WriteLine();
+            PrintMatrix(rref);
 
             Matrix result = new Matrix(n, n);
             for (int i = 0; i < n; i++)
@@ -214,23 +221,6 @@ namespace MatrixLibrary
         /// <param name="matrix"></param>
         /// <returns>true if the column vectors of the matrix are linearly independent, else false</returns>
         public static bool IsLinearlyIndependent(this Matrix matrix)
-        {
-            int n = matrix.rows, m = matrix.columns;
-
-            // more column vectors than equations means linearly dependent
-            if (m > n) return false;
-
-            // compare rref to identity matrix
-            var rref = MatrixFunctions.RREF(matrix);
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                {
-                    if (i == j) continue;
-                    if (rref[i, j] != 0)
-                        return false;
-                }
-
-            return true;
-        }
+            => matrix.determinant != 0;
     }
 }
