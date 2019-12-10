@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Matrix
+namespace MatrixLibrary
 {
     /// <summary>
     /// Matrix class to provide properties and functionality important to applications of linear algebra
@@ -16,8 +16,8 @@ namespace Matrix
         public Matrix(int rows, int columns)
         { grid = new decimal[rows, columns]; }
 
-        public Matrix(decimal[,] grid)
-        { grid = _Deepcopy(grid); }
+        public Matrix(decimal[,] matrix)
+        { grid = _Deepcopy(matrix); }
 
         public Matrix(Matrix a)
         { grid = _Deepcopy(a.grid); }
@@ -54,35 +54,61 @@ namespace Matrix
                     b[i, j] = -a[i, j];
             return b;
         }
+
+        /// <summary>
+        /// returns a new matrix for which each entry at indices i,j 
+        /// is the sum of the values of a and b at the same indices
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Matrix operator +(Matrix a, Matrix b)
         {
             if (a.rows != b.rows || a.columns != b.columns)
                 throw new ArgumentException("matrices must be the same size in rows and columns to add");
 
             // todo: is a new matrix necessary?
+            Matrix result = new Matrix(a.rows, a.columns);
             for (int i = 0; i < a.rows; i++)
-                for (int j = 0; j < a.columns; i++)
-                    a[i, j] = a[i, j] + b[i, j];
-            return a;
+                for (int j = 0; j < a.columns; j++)
+                    result[i, j] = a[i, j] + b[i, j];
+            return result;
         }
+
+
+        /// <summary>
+        /// returns a new matrix for which each entry at indices i,j 
+        /// is the difference of the values of a and b at the same indices
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Matrix operator -(Matrix a, Matrix b)
         {
             if (a.rows != b.rows || a.columns != b.columns)
                 throw new ArgumentException("matrices must be the same size in rows and columns to add");
-            
+
             // todo: is a new matrix necessary?
+            Matrix result = new Matrix(a.rows, a.columns);
             for (int i = 0; i < a.rows; i++)
                 for (int j = 0; j < a.columns; j++)
-                    a[i, j] -= b[i, j];
-            return a;
+                    result[i, j] = a[i,j] - b[i, j];
+            return result;
         }
+
+        /// <summary>
+        /// returns the matrix product of a and b as a new matrix
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Matrix operator *(Matrix a, Matrix b)
         {
             if (a.columns != b.rows)
                 throw new ArgumentException("cannot multiply matrices with different sized columns/rows");
 
             int m = a.rows, n = b.columns;
-            decimal[,] result = new decimal[m, n];
+            Matrix result = new Matrix(m, n);
 
             for (int i = 0; i < m; i++)
                 for (int j = 0; j < n; j++)
@@ -92,44 +118,45 @@ namespace Matrix
                         sum += a[i, k] * b[k, j];
                     result[i, j] = sum;
                 }
-            return new Matrix(result);
+            return result;
         }
-        public override string ToString() => "Matrix";
-    }
 
-    /// <summary>
-    /// Extension class to provide additional functionality to the Matrix class
-    /// 
-    /// These could be implemented in the main matrix class as additional properties, 
-    /// but I think that properties are set upon object creation.
-    /// These properties aren't necessary upon object creation, so for now they're here.
-    /// </summary>
-    public static class MatrixExtensions
-    {
         /// <summary>
-        /// determines if the column vectors of a given matrix are linearly independent
-        /// by computing the determinant of the matrix
+        /// returns true if a and b are the same size 
+        /// and every value in a for any index i,j equals the value at the corresponding index i,j of b,
+        /// else false
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns>true if the column vectors of the matrix are linearly independent, else false</returns>
-        public static bool IsLinearlyIndependent(this decimal[,] matrix)
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool operator ==(Matrix a, Matrix b)
         {
-            int n = matrix.GetLength(0), m = matrix.GetLength(1);
-
-            // more column vectors than equations means linearly dependent
-            if (m > n) return false;
-
-            // compare rref to identity matrix
-            var rref = RREF(matrix);
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                {
-                    if (i == j) continue;
-                    if (rref[i, j] != 0)
+            if (a.rows != b.rows || a.columns != b.columns)
+                return false;
+            for (int i = 0; i < a.rows; i++)
+                for (int j = 0; j < a.columns; j++)
+                    if (a[i, j] != b[i, j])
                         return false;
-                }
-
             return true;
+        }
+
+        /// <summary>
+        /// returns true if a and b are not the same size 
+        /// or any value in a for any index i,j does not equal the value at the corresponding index i,j of b,
+        /// else false
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool operator !=(Matrix a, Matrix b) => !(a == b);
+
+        // overrides
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(this.GetType().Equals(obj.GetType())))
+                return false;
+
+            return this == (Matrix)obj;
         }
     }
 }

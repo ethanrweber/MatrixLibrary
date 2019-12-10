@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace Matrix
+namespace MatrixLibrary
 {
     /// <summary>
     /// Library of matrix functions
     /// implementations are non-generic and specify type decimal to ensure reliability and accuracy
     /// </summary>
-    public static class MatrixLibrary
-    {        
+    public static class MatrixFunctions
+    {
         /// <summary>
         /// returns the given matrix in reduced row echelon form using Gaussian Elimination
         /// </summary>
-        /// <param name="A">n x m matrix</param>
+        /// <param name="matrix">m x n matrix</param>
         /// <returns>n x m matrix in reduced row echelon form</returns>
         public static Matrix RREF(Matrix matrix)
         {
@@ -74,23 +74,15 @@ namespace Matrix
         /// </summary>
         /// <param name="matrix">matrix to be printed</param>
         /// <param name="round">number of decimal points to round answers, default 2</param>
-        public static void PrintMatrix(Matrix matrix, int round = 2) => PrintMatrix(matrix.grid, round);
-
-        /// <summary>
-        /// prints a matrix to console output
-        /// </summary>
-        /// <param name="matrix">matrix to be printed</param>
-        /// <param name="round">number of decimal points to round answers, default 2</param>
-        public static void PrintMatrix(decimal[,] matrix, int round = 2)
+        public static void PrintMatrix(Matrix matrix, int round = 2)
         {
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < matrix.rows; i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < matrix.columns; j++)
                     Console.Write(decimal.Round(matrix[i, j], round) + "\t");
                 Console.WriteLine();
             }
         }
-
 
         /// <summary>
         /// computes the determinant of a matrix
@@ -117,7 +109,8 @@ namespace Matrix
         /// <param name="parent"></param>
         /// <param name="row"></param>
         /// <param name="col"></param>
-        /// <returns>returns an (m-1) x (n-1) sub-matrix excluding row 'row' and column 'col'</returns>
+        /// <returns>returns an (m-1) x (n-1) sub-matrix of the m x n parent matrix
+        /// excluding row 'row' and column 'col'</returns>
         public static Matrix GetSubmatrix(Matrix parent, int row, int col)
         {
             int pn = parent.rows;
@@ -203,6 +196,38 @@ namespace Matrix
                     result[i, j - n] = rref[i, j];
 
             return result;
+        }
+    }
+
+    /// <summary>
+    /// Extension class to provide additional functionality to the Matrix class
+    /// </summary>
+    public static class MatrixExtensions
+    {
+        /// <summary>
+        /// determines if the column vectors of a given matrix are linearly independent
+        /// by computing the determinant of the matrix
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns>true if the column vectors of the matrix are linearly independent, else false</returns>
+        public static bool IsLinearlyIndependent(this Matrix matrix)
+        {
+            int n = matrix.rows, m = matrix.columns;
+
+            // more column vectors than equations means linearly dependent
+            if (m > n) return false;
+
+            // compare rref to identity matrix
+            var rref = MatrixFunctions.RREF(matrix);
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == j) continue;
+                    if (rref[i, j] != 0)
+                        return false;
+                }
+
+            return true;
         }
     }
 }

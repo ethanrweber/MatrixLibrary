@@ -186,9 +186,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eweber01\\Source\\Repos\\MatrixLibrary\\Matrix\\Matrix.csproj",
-      "projectName": "Matrix",
-      "projectPath": "C:\\Users\\eweber01\\Source\\Repos\\MatrixLibrary\\Matrix\\Matrix.csproj",
+      "projectUniqueName": "C:\\Users\\eweber01\\Source\\Repos\\MatrixLibrary\\Matrix\\MatrixLibrary.csproj",
+      "projectName": "MatrixLibrary",
+      "projectPath": "C:\\Users\\eweber01\\Source\\Repos\\MatrixLibrary\\Matrix\\MatrixLibrary.csproj",
       "packagesPath": "C:\\Users\\eweber01\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\eweber01\\Source\\Repos\\MatrixLibrary\\Matrix\\obj\\",
       "projectStyle": "PackageReference",
