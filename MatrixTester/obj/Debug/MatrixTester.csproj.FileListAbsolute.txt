@@ -28,3 +28,18 @@ C:\Users\eweber01\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\MatrixLibrar
 C:\Users\eweber01\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 C:\Users\eweber01\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 C:\Users\eweber01\Source\Repos\MatrixLibrary\MatrixTester\obj\Debug\MatrixTester.csproj.CopyComplete
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\MatrixTester.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\MatrixTester.pdb
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\MatrixLibrary.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\MatrixLibrary.pdb
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\obj\Debug\MatrixTester.csprojAssemblyReference.cache
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\obj\Debug\MatrixTester.csproj.CopyComplete
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\obj\Debug\MatrixTester.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\MatrixTester\obj\Debug\MatrixTester.pdb

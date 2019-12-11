@@ -7,3 +7,11 @@ C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\bin\Debug\netstandard2.0\Mat
 C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\bin\Debug\netstandard2.0\MatrixLibrary.pdb
 C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.dll
 C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.pdb
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\bin\Debug\netstandard2.0\MatrixLibrary.deps.json
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\bin\Debug\netstandard2.0\MatrixLibrary.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\bin\Debug\netstandard2.0\MatrixLibrary.pdb
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.csprojAssemblyReference.cache
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.AssemblyInfoInputs.cache
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.AssemblyInfo.cs
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.dll
+C:\Users\Ethan Weber\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.pdb
