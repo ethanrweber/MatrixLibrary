@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MatrixLibrary
 {
@@ -6,42 +9,66 @@ namespace MatrixLibrary
     /// <summary>
     /// Matrix class to provide properties and functionality important to applications of linear algebra
     /// </summary>
-    public class Matrix
+    public class Matrix : IEnumerable<Vector>
     {
         // properties
-        public decimal[,] grid { get; set; }
-        public int rows => grid?.GetLength(0) ?? 0;
-        public int columns => grid?.GetLength(1) ?? 0;
+        public List<Vector> grid { get; set; }
+        public int rows => grid?.First()?.height ?? 0;
+        public int columns => grid?.Count ?? 0;
 
         // constructors
-        public Matrix(int rows, int columns)
-        { grid = new decimal[rows, columns]; }
+        public Matrix()
+        { grid = new List<Vector>(); }
 
-        public Matrix(decimal[,] matrix)
+        public Matrix(int rowCount, int colCount)
+        {
+            grid = new List<Vector>(colCount);
+            for(int j = 0; j < colCount; j++)
+                grid[j] = new Vector(rowCount);
+        }
+
+        public Matrix(List<Vector> matrix)
         { grid = _Deepcopy(matrix); }
 
         public Matrix(Matrix a)
         { grid = _Deepcopy(a.grid); }
 
-        // matrix grid deep copy function
-        private static decimal[,] _Deepcopy(decimal[,] matrix)
+        public Matrix(decimal[,] matrix)
         {
-            if (matrix == null) throw new ArgumentException("cannot copy null matrix");
+            if(matrix == null || matrix.GetLength(0) == 0 || matrix.GetLength(1) == 0)
+                throw new ArgumentNullException();
 
-            int n = matrix.GetLength(0), m = matrix.GetLength(1);
+            int height = matrix.GetLength(0);
 
-            decimal[,] copy = new decimal[n, m];
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < m; j++)
-                    copy[i, j] = matrix[i, j];
+            // iterate over columns
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                decimal[] v = new decimal[height];
+                for (int i = 0; i < height; i++)
+                    v[i] = matrix[i, j];
+                grid.Add(new Vector(v));
+            }
+        }
+
+        // matrix grid deep copy function
+        private static List<Vector> _Deepcopy(List<Vector> matrix)
+        {
+            if (matrix == null || matrix.Count == 0) throw new ArgumentException("cannot copy null/empty matrix");
+            int vHeight = matrix[0].height;
+            if(matrix.Any(v => v.height != vHeight)) throw new ArgumentException("All vectors must be the same height");
+
+            List<Vector> copy = new List<Vector>(matrix.Count);
+            foreach (Vector v in matrix)
+                copy.Add(new Vector(v));
+
             return copy;
         }
 
         // indexer for ease of access
         public decimal this[int i, int j]
         {
-            get => grid[i, j];
-            set => grid[i, j] = value;
+            get => grid[i][j];
+            set => grid[i][j] = value;
         }
 
         // operators
@@ -54,10 +81,10 @@ namespace MatrixLibrary
         {
             if (a == null) throw new ArgumentNullException();
 
-            Matrix b = new Matrix(a.rows, a.columns);
-            for (int i = 0; i < a.rows; i++)
-                for (int j = 0; j < a.columns; j++)
-                    b[i, j] = -a[i, j];
+            Matrix b = new Matrix();
+            foreach (Vector v in a)
+                b.grid.Add(new Vector(-v));
+            
             return b;
         }
 
@@ -82,7 +109,6 @@ namespace MatrixLibrary
             return result;
         }
 
-
         /// <summary>
         /// returns a new matrix for which each entry at indices i,j 
         /// is the difference of the values of a and b at the same indices
@@ -92,7 +118,6 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static Matrix operator -(Matrix a, Matrix b)
         {
-            // I could just do "=> a + (-b)" but that would do 2 matrix inits instead of just 1 here
             if (a == null || b == null)
                 throw new ArgumentNullException();
             if (a.rows != b.rows || a.columns != b.columns)
@@ -101,7 +126,7 @@ namespace MatrixLibrary
             Matrix result = new Matrix(a.rows, a.columns);
             for (int i = 0; i < a.rows; i++)
                 for (int j = 0; j < a.columns; j++)
-                    result[i, j] = a[i,j] - b[i, j];
+                    result[i, j] = a[i, j] - b[i, j];
             return result;
         }
 
@@ -131,6 +156,13 @@ namespace MatrixLibrary
             return result;
         }
 
+        /// <summary>
+        /// returns a new matrix with for which every entry in every row
+        /// is equivalent to every entry of every row of a scaled by scalar
+        /// </summary>
+        /// <param name="scalar"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Matrix operator *(decimal scalar, Matrix a)
         {
             if (a == null) throw new ArgumentNullException();
@@ -188,5 +220,9 @@ namespace MatrixLibrary
 
             return this == (Matrix)obj;
         }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public IEnumerator<Vector> GetEnumerator() => grid.GetEnumerator();
     }
 }

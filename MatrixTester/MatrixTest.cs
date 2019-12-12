@@ -39,7 +39,7 @@ namespace MatrixTester
         {
             Matrix a = new Matrix(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
 
-            Assert.AreEqual(a[1, 1], a.grid[1, 1]);
+            Assert.AreEqual(a[1, 1], a[1, 1]);
         }
 
         [TestMethod]
