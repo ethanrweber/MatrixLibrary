@@ -24,7 +24,7 @@ namespace MatrixLibrary
         {
             grid = new List<Vector>(colCount);
             for(int j = 0; j < colCount; j++)
-                grid[j] = new Vector(rowCount);
+                grid.Add(new Vector(rowCount));
         }
 
         public Matrix(List<Vector> matrix)
@@ -38,10 +38,11 @@ namespace MatrixLibrary
             if(matrix == null || matrix.GetLength(0) == 0 || matrix.GetLength(1) == 0)
                 throw new ArgumentNullException();
 
-            int height = matrix.GetLength(0);
+            int height = matrix.GetLength(0), width = matrix.GetLength(1);
 
             // iterate over columns
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            grid = new List<Vector>(width);
+            for (int j = 0; j < width; j++)
             {
                 decimal[] v = new decimal[height];
                 for (int i = 0; i < height; i++)
