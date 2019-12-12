@@ -2,13 +2,7 @@
 
 namespace MatrixLibrary
 {
-
-
-    // TODO:
-    // move linear independence directly to this matrix class
-    // check notes to add other invertible matrix properties
-    // update matrix unit tests for this afterwards
-
+    //todo: refactor class to use Vector class
     /// <summary>
     /// Matrix class to provide properties and functionality important to applications of linear algebra
     /// </summary>
@@ -18,8 +12,6 @@ namespace MatrixLibrary
         public decimal[,] grid { get; set; }
         public int rows => grid?.GetLength(0) ?? 0;
         public int columns => grid?.GetLength(1) ?? 0;
-        public decimal determinant => MatrixFunctions.GetDeterminant(this);
-        public bool isLinearlyIndependent => determinant != 0;
 
         // constructors
         public Matrix(int rows, int columns)
@@ -165,8 +157,7 @@ namespace MatrixLibrary
         {
             if (ReferenceEquals(a, b)) return true;
 
-            if (ReferenceEquals(a, null) && !ReferenceEquals(b, null)
-                || ReferenceEquals(b, null) && !ReferenceEquals(a, null))
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
                 return false;
 
             if (a.rows != b.rows || a.columns != b.columns)

@@ -1,4 +1,3 @@
-C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.csprojAssemblyReference.cache
 C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.csproj.CoreCompileInputs.cache
 C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.AssemblyInfoInputs.cache
 C:\Users\eweber01\Source\Repos\MatrixLibrary\Matrix\obj\Debug\netstandard2.0\MatrixLibrary.AssemblyInfo.cs

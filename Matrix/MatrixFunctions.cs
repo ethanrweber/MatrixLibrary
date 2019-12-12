@@ -181,7 +181,7 @@ namespace MatrixLibrary
         {
             if (matrix == null) throw new ArgumentNullException();
             // todo: is returning null the best option?
-            if (matrix.rows != matrix.columns || GetDeterminant(matrix) == 0) return null; 
+            if (!matrix.isInvertible()) return null;
 
             int n = matrix.rows;
 
@@ -195,10 +195,8 @@ namespace MatrixLibrary
                     toRref[i, j] = 0;
                 toRref[i, i + n] = 1;
             }
-            PrintMatrix(toRref);
+            
             Matrix rref = RREF(toRref);
-            Console.WriteLine();
-            PrintMatrix(rref);
 
             Matrix result = new Matrix(n, n);
             for (int i = 0; i < n; i++)
@@ -207,20 +205,40 @@ namespace MatrixLibrary
 
             return result;
         }
-    }
 
-    /// <summary>
-    /// Extension class to provide additional functionality to the Matrix class
-    /// </summary>
-    public static class MatrixExtensions
-    {
         /// <summary>
-        /// determines if the column vectors of a given matrix are linearly independent
-        /// by computing the determinant of the matrix
+        /// calculate the rank of a matrix
         /// </summary>
         /// <param name="matrix"></param>
-        /// <returns>true if the column vectors of the matrix are linearly independent, else false</returns>
-        public static bool IsLinearlyIndependent(this Matrix matrix)
-            => matrix.determinant != 0;
+        /// <returns></returns>
+        public static int Rank(Matrix matrix)
+        {
+            if (matrix == null) throw new ArgumentNullException();
+
+            Matrix rref = RREF(matrix);
+
+            int rank = 0;
+            for(int i = 0; i < rref.rows; i++)
+                for(int j = 0; j < rref.columns; j++)
+                    if (rref[i, j] != 0)
+                    {
+                        rank++;
+                        break;
+                    }
+
+            return rank;
+        }
+
+        ///// <summary>
+        ///// produces an output matrix representing an orthogonal basis for an input matrix by the Gram-Schmidt Process
+        ///// </summary>
+        ///// <param name="matrix"></param>
+        ///// <returns></returns>
+        //public static Matrix GramSchmidt(Matrix matrix)
+        //{
+
+        //}
+
+        public static bool isInvertible(this Matrix matrix) => GetDeterminant(matrix) != 0;
     }
 }

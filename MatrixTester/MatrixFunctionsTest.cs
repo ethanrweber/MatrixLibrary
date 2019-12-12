@@ -99,12 +99,33 @@ namespace MatrixTester
             Assert.ThrowsException<ArgumentNullException>(() => GetInverse(a));
         }
 
-        //Extension Methods
         [TestMethod]
-        public void TestLinearIndependence()
+        public void TestIsInvertible()
         {
             Matrix a = new Matrix(new decimal[,] { { 1, 3, 5, 9 }, { 1, 3, 1, 7 }, { 4, 3, 9, 7 }, { 5, 2, 0, 9 } });
-            Assert.IsTrue(a.IsLinearlyIndependent());
+            Assert.IsTrue(a.isInvertible());
+        }
+
+        [TestMethod]
+        public void TestRank()
+        {
+            Matrix a = new Matrix(new decimal[,] {{1, 2, 4, 4}, {3, 4, 8, 0}});
+            Assert.AreEqual(2, Rank(a));
+        }
+
+        [TestMethod]
+        public void TestRankTranspose()
+        {
+            Matrix a = new Matrix(new decimal[,] {{1, 1, 0, 2},{-1, -1, 0, -2}});
+            Matrix at = GetTranspose(a);
+            Assert.AreEqual(Rank(a), Rank(at));
+        }
+
+        [TestMethod]
+        public void TestRank_ThrowsArgumentNullException()
+        {
+            Matrix a = null;
+            Assert.ThrowsException<ArgumentNullException>(() => Rank(a));
         }
     }
 }
