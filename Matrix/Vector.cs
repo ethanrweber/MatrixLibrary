@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MatrixLibrary
 {
-    public class Vector
+    public class Vector : IEnumerable<decimal>
     {
-        public decimal[] column { get; set; }
+        private decimal[] column { get; set; }
         public int height => column.Length;
+        public decimal magnitude => (decimal)Math.Sqrt((double)column.Sum(x => x * x));
         
         // constructors
         public Vector(int height)
@@ -35,12 +38,22 @@ namespace MatrixLibrary
         }
 
         // operator overloading
+        /// <summary>
+        /// returns v
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
         public static Vector operator +(Vector v)
         {
             if (v == null) throw new ArgumentNullException();
             return v;
         }
 
+        /// <summary>
+        /// negates every value in a vector and returns the result as a new vector
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Vector operator -(Vector a)
         {
             if (a == null) throw new ArgumentNullException();
@@ -51,6 +64,12 @@ namespace MatrixLibrary
             return b;
         }
 
+        /// <summary>
+        /// computes the sum of each entry between a and b and returns the results as a new vector
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Vector operator +(Vector a, Vector b)
         {
             if(a == null || b == null) throw new ArgumentNullException();
@@ -62,6 +81,12 @@ namespace MatrixLibrary
             return result;
         }
 
+        /// <summary>
+        /// computes the difference of each entry between a and b and returns a new vector
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Vector operator -(Vector a, Vector b)
         {
             if (a == null || b == null) throw new ArgumentNullException();
@@ -73,6 +98,12 @@ namespace MatrixLibrary
             return result;
         }
 
+        /// <summary>
+        /// scales a vector a by a scalar scalar
+        /// </summary>
+        /// <param name="scalar"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static Vector operator *(decimal scalar, Vector a)
         {
             if (a == null) throw new ArgumentNullException();
@@ -87,7 +118,7 @@ namespace MatrixLibrary
         }
 
         /// <summary>
-        /// computes the dot product between vectors a and b 
+        /// computes the dot/inner product between vectors a and b 
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -103,6 +134,16 @@ namespace MatrixLibrary
             return result;
         }
 
+        /// <summary>
+        /// if a and b are equal by reference, return true
+        /// if a and null or b and null are equal by ref, return false
+        /// if a and b have a different height, return false
+        /// if there are any values that don't match between a and b, return false
+        /// else return true, a and b are equal
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator ==(Vector a, Vector b)
         {
             if (ReferenceEquals(a, b)) return true;
@@ -119,14 +160,40 @@ namespace MatrixLibrary
             return true;
         }
 
+        /// <summary>
+        /// inverse of == operator
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static bool operator !=(Vector a, Vector b) => !(a == b);
 
+        // override of class object
         public override bool Equals(object obj)
         {
             if (obj == null || !(this.GetType().Equals(obj.GetType())))
                 return false;
 
             return this == (Vector)obj;
+        }
+
+        // implements IEnumerable
+        public IEnumerator<decimal> GetEnumerator() => column.AsEnumerable().GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <summary>
+        /// converts a vector into a unit vector
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vector Normalize(Vector v)
+        {
+            decimal sum = v.column.Sum();
+
+            Vector result = new Vector(v);
+            for (int i = 0; i < result.height; i++)
+                result[i] /= sum;
+            return result;
         }
     }
 }

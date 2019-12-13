@@ -20,10 +20,10 @@ namespace MatrixLibrary
         public Matrix()
         { grid = new List<Vector>(); }
 
-        public Matrix(int rowCount, int colCount)
+        public Matrix(int rowCount, int columnCount)
         {
-            grid = new List<Vector>(colCount);
-            for(int j = 0; j < colCount; j++)
+            grid = new List<Vector>(columnCount);
+            for(int j = 0; j < columnCount; j++)
                 grid.Add(new Vector(rowCount));
         }
 
@@ -178,6 +178,19 @@ namespace MatrixLibrary
                     result[i, j] = scalar * a[i, j];
             return result;
         }
+        
+        public static Vector operator *(Matrix a, Vector b)
+        {
+            if (a == null || b == null) throw new ArgumentNullException();
+            if(a.columns != b.height) throw new ArgumentException("Cannot multiply a matrix with a vector whose height does not match the width of the columns of the matrix");
+
+            Vector result = new Vector(a.rows);
+            for (int i = 0; i < a.rows; i++)
+                for (int j = 0; j < a.columns; j++)
+                    result[i] += a[i, j] * b[j];
+
+            return result;
+        }
 
         /// <summary>
         /// returns true if a and b are the same size 
@@ -189,7 +202,8 @@ namespace MatrixLibrary
         /// <returns></returns>
         public static bool operator ==(Matrix a, Matrix b)
         {
-            if (ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, b))
+                return true;
 
             if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
                 return false;

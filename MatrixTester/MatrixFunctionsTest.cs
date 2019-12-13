@@ -78,7 +78,6 @@ namespace MatrixTester
         {
             Matrix a = new Matrix(new decimal[,] { {4, 7}, {2, 6} });
             Matrix aInverse = new Matrix(new decimal[,] {{0.6m, -0.7m}, {-0.2m, 0.4m}});
-
             Assert.AreEqual(aInverse, GetInverse(a));
         }
 
@@ -87,9 +86,8 @@ namespace MatrixTester
         {
             Matrix a = new Matrix(new decimal[,] { { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 } });
             Matrix inverse = GetInverse(a);
-
             // a has no inverse
-            Assert.AreEqual(inverse, null);
+            Assert.AreEqual(null, inverse);
         }
 
         [TestMethod]

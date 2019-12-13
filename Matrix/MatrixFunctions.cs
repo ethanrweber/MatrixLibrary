@@ -234,10 +234,20 @@ namespace MatrixLibrary
         ///// </summary>
         ///// <param name="matrix"></param>
         ///// <returns></returns>
-        //public static Matrix GramSchmidt(Matrix matrix)
-        //{
+        public static Matrix GramSchmidt(Matrix matrix)
+        {
+            if (matrix == null) throw new ArgumentNullException();
+            Matrix result = new Matrix(matrix.rows, matrix.columns);
 
-        //}
+            result.grid[0] = new Vector(matrix.grid[0]);
+            for (int i = 1; i < matrix.columns; i++)
+            {
+                result.grid[i] = matrix.grid[i];
+                // todo: FINISH
+            }
+
+            return result;
+        }
 
         public static bool isInvertible(this Matrix matrix) => GetDeterminant(matrix) != 0;
     }
