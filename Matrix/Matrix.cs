@@ -68,8 +68,9 @@ namespace MatrixLibrary
         // indexer for ease of access
         public decimal this[int i, int j]
         {
-            get => grid[i][j];
-            set => grid[i][j] = value;
+            // get ith row and jth column instead of ith column vector and jth row
+            get => grid[j][i];
+            set => grid[j][i] = value;
         }
 
         // operators
