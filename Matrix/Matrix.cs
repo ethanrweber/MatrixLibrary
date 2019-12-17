@@ -179,6 +179,12 @@ namespace MatrixLibrary
             return result;
         }
         
+        /// <summary>
+        /// multiplies a matrix by a vector
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public static Vector operator *(Matrix a, Vector b)
         {
             if (a == null || b == null) throw new ArgumentNullException();
@@ -188,7 +194,25 @@ namespace MatrixLibrary
             for (int i = 0; i < a.rows; i++)
                 for (int j = 0; j < a.columns; j++)
                     result[i] += a[i, j] * b[j];
+            return result;
+        }
 
+        /// <summary>
+        /// multiplies a vector by a matrix
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static Matrix operator *(Vector a, Matrix b)
+        {
+            if(a == null || b == null) throw new ArgumentNullException();
+            // 1 is only possible width of a vector
+            if(b.rows != 1) throw new ArgumentException("Cannot multiply a matrix with a vector whose height does not match the width of the columns of the matrix");
+
+            Matrix result = new Matrix(a.height, b.columns);
+            for (int i = 0; i < result.rows; i++)
+                for (int j = 0; j < result.columns; j++)
+                    result[i, j] = a[i] * b[i, j];
             return result;
         }
 

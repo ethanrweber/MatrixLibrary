@@ -124,6 +124,15 @@ namespace MatrixTester
         }
 
         [TestMethod]
+        public void TestMultiplication_VectorByMatrix()
+        {
+            Vector a = new Vector(new decimal[] {1, 2});
+            Matrix b = new Matrix(new decimal[,] {{1, 2, 3, 4}});
+            Matrix result = new Matrix(new decimal[,] {{1, 2, 3, 4},{2, 4, 6, 8}});
+            Assert.AreEqual(result, a * b);
+        }
+
+        [TestMethod]
         public void TestMultiplication_ThrowsArgumentException()
         {
             Matrix a = new Matrix(new decimal[,] { { 1, 1, 1 }, { 1, 1, 1 } });
