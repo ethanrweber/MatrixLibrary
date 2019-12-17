@@ -32,6 +32,23 @@ namespace MatrixTester
         }
 
         [TestMethod]
+        public void TestIndexerVectorGet()
+        {
+            Matrix a = new Matrix(new decimal[,] {{1, 2}, {3, 4}});
+            Vector a0 = new Vector(new decimal[] {1, 3});
+            Assert.AreEqual(a0, a[0]);
+        }
+
+        [TestMethod]
+        public void TestIndexerVectorSet()
+        {
+            Matrix a = new Matrix(2, 2);
+            Vector a0 = new Vector(new decimal[] { 1, 3 });
+            a[0] = a0;
+            Assert.AreEqual(a0, a[0]);
+        }
+
+        [TestMethod]
         public void TestIndexerGet()
         {
             Matrix a = new Matrix(new decimal[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });

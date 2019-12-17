@@ -9,19 +9,20 @@ namespace MatrixLibrary
     {
         private decimal[] column { get; set; }
         public int height => column.Length;
-        public decimal magnitude => (decimal)Math.Sqrt((double)column.Sum(x => x * x));
+        public decimal magnitudeSquared => column.Sum(x => x * x);
+        public decimal magnitude => (decimal)Math.Sqrt((double)magnitudeSquared);
         
         // constructors
         public Vector(int height)
         { column = new decimal[height]; }
 
         public Vector(decimal[] arr)
-        { column = _Deepcopy(arr); }
+        { column = CopyVector(arr); }
 
         public Vector(Vector vector)
-        { column = _Deepcopy(vector.column); }
+        { column = CopyVector(vector.column); }
 
-        private static decimal[] _Deepcopy(decimal[] arr)
+        private static decimal[] CopyVector(decimal[] arr)
         {
             decimal[] copy = new decimal[arr.Length];
             for (int i = 0; i < copy.Length; i++)
@@ -116,6 +117,10 @@ namespace MatrixLibrary
             return result;
         }
 
+        public static Vector operator *(Vector a, decimal scalar) => scalar * a;
+        public static Vector operator /(decimal scalar, Vector a) => (1 / scalar) * a;
+        public static Vector operator /(Vector a, decimal scalar) => (1 / scalar) * a;
+
         /// <summary>
         /// computes the dot/inner product between vectors a and b 
         /// </summary>
@@ -179,20 +184,5 @@ namespace MatrixLibrary
         // implements IEnumerable
         public IEnumerator<decimal> GetEnumerator() => column.AsEnumerable().GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        /// <summary>
-        /// converts a vector into a unit vector
-        /// </summary>
-        /// <param name="v"></param>
-        /// <returns></returns>
-        public static Vector Normalize(Vector v)
-        {
-            decimal sum = v.column.Sum();
-
-            Vector result = new Vector(v);
-            for (int i = 0; i < result.height; i++)
-                result[i] /= sum;
-            return result;
-        }
     }
 }

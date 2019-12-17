@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MatrixLibrary
 {
@@ -214,38 +215,45 @@ namespace MatrixLibrary
         public static int Rank(Matrix matrix)
         {
             if (matrix == null) throw new ArgumentNullException();
-
             Matrix rref = RREF(matrix);
 
             int rank = 0;
             for(int i = 0; i < rref.rows; i++)
                 for(int j = 0; j < rref.columns; j++)
                     if (rref[i, j] != 0)
-                    {
-                        rank++;
-                        break;
-                    }
+                    { rank++; break; }
 
             return rank;
         }
 
-        ///// <summary>
-        ///// produces an output matrix representing an orthogonal basis for an input matrix by the Gram-Schmidt Process
-        ///// </summary>
-        ///// <param name="matrix"></param>
-        ///// <returns></returns>
+        /// <summary>
+        /// produces an output matrix representing an orthogonal basis for an input matrix by the Gram-Schmidt Process
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
         public static Matrix GramSchmidt(Matrix matrix)
         {
             if (matrix == null) throw new ArgumentNullException();
-            Matrix result = new Matrix(matrix.rows, matrix.columns);
+            Matrix result = new Matrix(matrix);
 
-            result.grid[0] = new Vector(matrix.grid[0]);
             for (int i = 1; i < matrix.columns; i++)
-            {
-                result.grid[i] = matrix.grid[i];
-                // todo: FINISH
-            }
+                for (int j = i-1; j >= 0; j--)
+                    result.grid[i] -= (matrix.grid[i] * result.grid[j] / result.grid[j].magnitudeSquared) * result.grid[j];
+            return result;
+        }
 
+        /// <summary>
+        /// returns a new matrix for which every vector is
+        /// the normalized version of its corresponding vector in the input matrix
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public static Matrix Normalize(Matrix matrix)
+        {
+            if(matrix == null) throw new ArgumentNullException();
+            Matrix result = new Matrix(matrix);
+            for (int i = 0; i < result.columns; i++)
+                result[i] /= result[i].magnitude;
             return result;
         }
 

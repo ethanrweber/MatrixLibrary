@@ -28,10 +28,10 @@ namespace MatrixLibrary
         }
 
         public Matrix(List<Vector> matrix)
-        { grid = _Deepcopy(matrix); }
+        { grid = CopyMatrix(matrix); }
 
         public Matrix(Matrix a)
-        { grid = _Deepcopy(a.grid); }
+        { grid = CopyMatrix(a.grid); }
 
         public Matrix(decimal[,] matrix)
         {
@@ -52,7 +52,7 @@ namespace MatrixLibrary
         }
 
         // matrix grid deep copy function
-        private static List<Vector> _Deepcopy(List<Vector> matrix)
+        private static List<Vector> CopyMatrix(List<Vector> matrix)
         {
             if (matrix == null || matrix.Count == 0) throw new ArgumentException("cannot copy null/empty matrix");
             int vHeight = matrix[0].height;
@@ -65,7 +65,17 @@ namespace MatrixLibrary
             return copy;
         }
 
-        // indexer for ease of access
+        // indexers for ease of access
+        public Vector this[int i]
+        {
+            get => grid[i];
+            set
+            {
+                if(value.height != rows)
+                    throw new ArgumentException("new vector's height must match height of matrix");
+                grid[i] = new Vector(value);
+            }
+        }
         public decimal this[int i, int j]
         {
             // get ith row and jth column instead of ith column vector and jth row
@@ -159,7 +169,7 @@ namespace MatrixLibrary
         }
 
         /// <summary>
-        /// returns a new matrix with for which every entry in every row
+        /// returns a new matrix for which every entry in every row
         /// is equivalent to every entry of every row of a scaled by scalar
         /// </summary>
         /// <param name="scalar"></param>
@@ -178,7 +188,11 @@ namespace MatrixLibrary
                     result[i, j] = scalar * a[i, j];
             return result;
         }
-        
+
+        public static Matrix operator *(Matrix a, decimal scalar) => scalar * a;
+        public static Matrix operator /(decimal scalar, Matrix a) => (1/scalar) * a;
+        public static Matrix operator /(Matrix a, decimal scalar) => (1/scalar) * a;
+
         /// <summary>
         /// multiplies a matrix by a vector
         /// </summary>
@@ -212,7 +226,7 @@ namespace MatrixLibrary
             Matrix result = new Matrix(a.height, b.columns);
             for (int i = 0; i < result.rows; i++)
                 for (int j = 0; j < result.columns; j++)
-                    result[i, j] = a[i] * b[i, j];
+                    result[i, j] = a[i] * b[0, j];
             return result;
         }
 

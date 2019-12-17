@@ -125,5 +125,20 @@ namespace MatrixTester
             Matrix a = null;
             Assert.ThrowsException<ArgumentNullException>(() => Rank(a));
         }
+
+        [TestMethod]
+        public void TestGramSchmidt()
+        {
+            Matrix a = new Matrix(new decimal[,] {{1, 2}, {1, 2}, {0, 3}});
+            Matrix result = new Matrix(new decimal[,] {{1, 0}, {1, 0}, {0, 3}});
+            Assert.AreEqual(result, GramSchmidt(a));
+        }
+
+        [TestMethod]
+        public void TestGramSchmidt_ThrowsArgumentNullException()
+        {
+            Matrix a = null;
+            Assert.ThrowsException<ArgumentNullException>(() => GramSchmidt(a));
+        }
     }
 }
