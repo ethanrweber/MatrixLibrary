@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MatrixLibrary
 {
@@ -243,6 +244,27 @@ namespace MatrixLibrary
         }
 
         /// <summary>
+        /// given a matrix A and a vector b, this will approximate Ax = b with AtAx = Atb
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public static Vector LeastSquares(Matrix A, Vector b)
+        {
+            if(A == null || b == null) throw new ArgumentNullException();
+            if(A.rows != b.height) throw new ArgumentException("cannot solve for vector with a different height than the matrix");
+
+            Matrix At = GetTranspose(A);
+            Matrix AtA = At * A;
+            Vector AtB = At * b;
+            Matrix AtAxAtB = new Matrix(A);
+            AtAxAtB.grid.Add(AtB);
+
+            Matrix rref = RREF(AtAxAtB);
+            Vector result = new Vector(rref.grid.Last());
+            return result;
+        }
+
+        /// <summary>
         /// returns a new matrix for which every vector is
         /// the normalized version of its corresponding vector in the input matrix
         /// </summary>
@@ -257,6 +279,11 @@ namespace MatrixLibrary
             return result;
         }
 
+        /// <summary>
+        /// determines if a matrix is invertible
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
         public static bool isInvertible(this Matrix matrix) => GetDeterminant(matrix) != 0;
     }
 }
