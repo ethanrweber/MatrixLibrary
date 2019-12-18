@@ -244,6 +244,20 @@ namespace MatrixLibrary
         }
 
         /// <summary>
+        /// Decomposes a matrix A into 2 matrices, Q and R, such that Q transpose * Q = I
+        /// and R is an upper triangular matrix such that A * Q inverse = A * Q transpose = R.
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns>Matrix array of length 2: M[0] = Q, M[1] = R</returns>
+        public static Matrix[] QRDecomposition(Matrix A)
+        {
+            if(A == null) throw new ArgumentNullException();
+            Matrix Q = Normalize(GramSchmidt(A));
+            Matrix R = A * GetTranspose(Q);
+            return new Matrix[] {Q, R};
+        }
+
+        /// <summary>
         /// given a matrix A and a vector b, this will approximate Ax = b with AtAx = Atb
         /// </summary>
         /// <param name="matrix"></param>

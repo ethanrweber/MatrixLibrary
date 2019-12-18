@@ -142,6 +142,42 @@ namespace MatrixTester
         }
 
         [TestMethod]
+        public void TestQRDecomposition()
+        {
+            Matrix a = new Matrix(new decimal[,] {{2, -2, 18}, {2, 1, 0}, {1, 2, 0}});
+            Matrix[] QR = QRDecomposition(a);
+            Matrix Q = new Matrix(new decimal[,] {{2m/3m, -2m/3m, 1m/3m}, {2m/3m, 1m/3m, -2m/3m}, {1m/3m, 1m/3m, 2m/3m}});
+            Matrix R = new Matrix(new decimal[,] {{3, 0, 12}, {0, 3, -12}, {0, 0, 6}});
+
+            // cannot directly compare QR and Q and R with == because of decimal precision issues from multiplication
+            // ex: 2/3 + 1/3 = 1.0000000000000000004
+            // todo: maybe fix if possible?
+            bool areVeryClose = true;
+            for(int i = 0; i < Q.rows; i++)
+                for (int j = 0; j < Q.columns; j++)
+                    if (Math.Abs(Q[i, j] - QR[0][i, j]) > 0.000000001m)
+                    {
+                        areVeryClose = false;
+                        break;
+                    }
+            if(areVeryClose)
+                for(int i = 0; i < R.rows; i++)
+                    for(int j = 0; j < R.columns; j++)
+                        if (Math.Abs(R[i, j] - QR[1][i, j]) > 0.000000001m)
+                        {
+                            areVeryClose = false;
+                            break;
+                        }
+            Assert.IsTrue(areVeryClose);
+        }
+
+        public void TestQRDecomposition_ThrowsArgumentNullException()
+        {
+            Matrix a = null;
+            Assert.ThrowsException<ArgumentNullException>(() => QRDecomposition(a));
+        }
+
+        [TestMethod]
         public void TestLeastSquares()
         {
             Matrix A = new Matrix(new decimal[,] {{1, 0}, {1, 1}, {1, 2}});
