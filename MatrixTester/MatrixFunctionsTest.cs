@@ -140,5 +140,22 @@ namespace MatrixTester
             Matrix a = null;
             Assert.ThrowsException<ArgumentNullException>(() => GramSchmidt(a));
         }
+
+        [TestMethod]
+        public void TestLeastSquares()
+        {
+            Matrix A = new Matrix(new decimal[,] {{1, 0}, {1, 1}, {1, 2}});
+            Vector b = new Vector(new decimal[] {6, 0, 0});
+            Vector result = new Vector(new decimal[] {5, -3});
+            Assert.AreEqual(result, LeastSquares(A, b));
+        }
+
+        [TestMethod]
+        public void TestLeastSquares_ThrowsArgumentNullException()
+        {
+            Matrix a = null;
+            Vector b = new Vector(new decimal[] { 6, 0, 0 });
+            Assert.ThrowsException<ArgumentNullException>(() => LeastSquares(a, b));
+        }
     }
 }

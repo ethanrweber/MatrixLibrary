@@ -157,11 +157,11 @@ namespace MatrixLibrary
 
             Matrix result = new Matrix(a.rows, b.columns);
 
-            for (int i = 0; i < a.rows; i++)
-                for (int j = 0; j < b.columns; j++)
+            for (int i = 0; i < result.rows; i++)
+                for (int j = 0; j < result.columns; j++)
                 {
                     decimal sum = 0;
-                    for (int k = 0; k < a.rows; k++)
+                    for (int k = 0; k < a.columns; k++)
                         sum += a[i, k] * b[k, j];
                     result[i, j] = sum;
                 }

@@ -256,7 +256,7 @@ namespace MatrixLibrary
             Matrix At = GetTranspose(A);
             Matrix AtA = At * A;
             Vector AtB = At * b;
-            Matrix AtAxAtB = new Matrix(A);
+            Matrix AtAxAtB = new Matrix(AtA);
             AtAxAtB.grid.Add(AtB);
 
             Matrix rref = RREF(AtAxAtB);
