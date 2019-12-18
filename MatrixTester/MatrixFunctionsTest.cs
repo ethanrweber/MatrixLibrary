@@ -146,11 +146,11 @@ namespace MatrixTester
         {
             Matrix a = new Matrix(new decimal[,] {{2, -2, 18}, {2, 1, 0}, {1, 2, 0}});
             Matrix[] QR = QRDecomposition(a);
-            Matrix Q = new Matrix(new decimal[,] {{2m/3m, -2m/3m, 1m/3m}, {2m/3m, 1m/3m, -2m/3m}, {1m/3m, 1m/3m, 2m/3m}});
+            Matrix Q = new Matrix(new decimal[,] {{2m/3m, -2m/3m, 1m/3m}, {2m/3m, 1m/3m, -2m/3m}, {1m/3m, 2m/3m, 2m/3m}});
             Matrix R = new Matrix(new decimal[,] {{3, 0, 12}, {0, 3, -12}, {0, 0, 6}});
 
             // cannot directly compare QR and Q and R with == because of decimal precision issues from multiplication
-            // ex: 2/3 + 1/3 = 1.0000000000000000004
+            // ex: 2/3 + 1/3 = 0.99999999999999999999
             // todo: maybe fix if possible?
             bool areVeryClose = true;
             for(int i = 0; i < Q.rows; i++)

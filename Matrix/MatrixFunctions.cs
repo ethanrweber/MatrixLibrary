@@ -253,7 +253,13 @@ namespace MatrixLibrary
         {
             if(A == null) throw new ArgumentNullException();
             Matrix Q = Normalize(GramSchmidt(A));
-            Matrix R = A * GetTranspose(Q);
+
+            int n = A.columns;
+            Matrix R = new Matrix(n, n);
+            for (int i = 0; i < n; i++)
+                for (int j = i; j < n; j++)
+                    R[i, j] = A.grid[j] * Q.grid[i];
+
             return new Matrix[] {Q, R};
         }
 
