@@ -152,10 +152,11 @@ namespace MatrixTester
             // cannot directly compare QR and Q and R with == because of decimal precision issues from multiplication
             // ex: 2/3 + 1/3 = 0.99999999999999999999
             // todo: maybe fix if possible?
+            decimal epsilon = 0.00000000001m;
             bool areVeryClose = true;
             for(int i = 0; i < Q.rows; i++)
                 for (int j = 0; j < Q.columns; j++)
-                    if (Math.Abs(Q[i, j] - QR[0][i, j]) > 0.000000001m)
+                    if (Math.Abs(Q[i, j] - QR[0][i, j]) > epsilon)
                     {
                         areVeryClose = false;
                         break;
@@ -163,11 +164,32 @@ namespace MatrixTester
             if(areVeryClose)
                 for(int i = 0; i < R.rows; i++)
                     for(int j = 0; j < R.columns; j++)
-                        if (Math.Abs(R[i, j] - QR[1][i, j]) > 0.000000001m)
+                        if (Math.Abs(R[i, j] - QR[1][i, j]) > epsilon)
                         {
                             areVeryClose = false;
                             break;
                         }
+
+            Assert.IsTrue(areVeryClose);
+        }
+
+        [TestMethod]
+        public void TestQRDecomposition_QInverseEqualsQTranspose()
+        {
+            Matrix a = new Matrix(new decimal[,] { { 2, -2, 18 }, { 2, 1, 0 }, { 1, 2, 0 } });
+            Matrix[] QR = QRDecomposition(a);
+
+            Matrix Qi = GetInverse(QR[0]), Qt = GetTranspose(QR[0]);
+
+            decimal epsilon = 0.00000000001m;
+            bool areVeryClose = true;
+            for (int i = 0; i < QR[0].rows; i++)
+                for (int j = 0; j < QR[0].columns; j++)
+                    if (Math.Abs(Qi[i, j] - Qt[i, j]) > epsilon)
+                    {
+                        areVeryClose = false;
+                        break;
+                    }
             Assert.IsTrue(areVeryClose);
         }
 
